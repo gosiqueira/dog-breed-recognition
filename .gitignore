@@ -133,3 +133,4 @@ dmypy.json
 
 # Dataset files
 *.zip
+data/
