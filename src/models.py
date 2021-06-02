@@ -22,7 +22,7 @@ def DogResNet50(inputs, n_classes):
     x = data_augmentation(x)
     x = features(x)
     x = tf.keras.layers.GlobalAveragePooling2D()(x)
-    x = tf.keras.layers.Dense(.2)(x)
+    x = tf.keras.layers.Dropout(.2)(x)
     outputs = tf.keras.layers.Dense(n_classes)(x)
 
     return tf.keras.Model(inputs, outputs)
