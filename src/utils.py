@@ -15,10 +15,11 @@ def get_metrics(y_true, y_pred):
 
 def train(model, loader, optimizer, criterion, epochs=100, use_cuda=True):
     for epoch in range(epochs):
+        acc = 0
         with tqdm(loader) as pbar:
             epoch_desc = 'Epoch {{0: <{0}d}}'.format(1 + int(math.log10(epochs))).format(epoch + 1)
             pbar.set_description(epoch_desc)
-            for inputs, targets in pbar:
+            for batch_idx, (inputs, targets) in enumerate(pbar):
                 if use_cuda:
                     inputs, targets = inputs.cuda(), targets.cuda()
 
@@ -31,11 +32,9 @@ def train(model, loader, optimizer, criterion, epochs=100, use_cuda=True):
                 y_true = targets.numpy()
                 y_pred = np.argmax(preds.detach().cpu().numpy(), axis=1)
 
-                acc = accuracy_score(y_true, y_pred)
-                if acc > 0:
-                    print(acc)
-                    
-                pbar.set_postfix(loss='{0:.5f}'.format(loss), accuracy='{0:.03f}'.format(acc))
+                acc += accuracy_score(y_true, y_pred)
+
+                pbar.set_postfix(loss='{0:.5f}'.format(loss), accuracy='{0:.03f}'.format(acc / (batch_idx + 1)))
 
                 optimizer.zero_grad()
                 loss.backward()
