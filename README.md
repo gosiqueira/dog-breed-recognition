@@ -28,6 +28,13 @@ Download enrolled xxx dog breeds recognition model weights available [here]().
 
 ## Instructions
 
+There are basically 3 main operations to perform using this repo:
+- train: train a dog breed recognition model from scratch
+- enroll: replace the original dog breeds and enroll new ones to the model
+- eval: evaluate the enrolled breeds
+
+### Train
+
 To re-train the model, run the following command:
 
 ```python
@@ -39,6 +46,8 @@ python train.py <dirpath> <outpath> --epochs <num_epochs> --learning-rate <learn
 - `epochs`: the number of training epochs
 - `learning-rate`: optimizer learning rate value
 - `batch-size`: the number of instances to compose a mini-batch
+
+### Enroll
 
 To enroll new dog breeds, run the following command:
 
@@ -52,6 +61,8 @@ python enroll.py <dirpath> <outpath> <modelpath> --epochs <num_epochs> --learnin
 - `epochs`: the number of fine-tuning epochs
 - `learning-rate`: optimizer learning rate value
 - `batch-size`: the number of instances to compose a mini-batch
+
+### Eval
 
 To evaluate the enrolled breeds, run the following command:
 
