@@ -23,6 +23,7 @@ Download the dog breeds dataset [here](https://drive.google.com/file/d/1-njeI_NW
 ## Pre-trained model
 
 Download original 100 dog breeds recognition model weights available [here]().
+
 Download enrolled xxx dog breeds recognition model weights available [here]().
 
 ## Instructions
@@ -42,14 +43,25 @@ python train.py <dirpath> <outpath> --epochs <num_epochs> --learning-rate <learn
 To enroll new dog breeds, run the following command:
 
 ```python
-python train.py <dirpath> <outpath> <modelpath> --epochs <num_epochs> --learning-rate <learning_rate> --batch-size <batch_size>
+python enroll.py <dirpath> <outpath> <modelpath> --epochs <num_epochs> --learning-rate <learning_rate> --batch-size <batch_size>
 ```
 
 - `dirpath`: the dataset directory path
-- `outpath`: a path to store the training history and the model weights
+- `outpath`: a path to store the enroll history and the enrolled model weights
 - `modelpath`: a path to the pre-trained dog breed recognition model
 - `epochs`: the number of fine-tuning epochs
 - `learning-rate`: optimizer learning rate value
+- `batch-size`: the number of instances to compose a mini-batch
+
+To evaluate the enrolled breeds, run the following command:
+
+```python
+python eval.py <dirpath> <outpath> <modelpath> --batch-size <batch_size>
+```
+
+- `dirpath`: the dataset directory path
+- `outpath`: a path to store the evaluation history
+- `modelpath`: a path to the pre-trained dog breed recognition model
 - `batch-size`: the number of instances to compose a mini-batch
 
 ## Contributions
