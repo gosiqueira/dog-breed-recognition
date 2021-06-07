@@ -78,10 +78,10 @@ python eval.py <dirpath> <outpath> <modelpath> --batch-size <batch_size>
 ## Next steps
 
 - Recognize the mutts - For this there are two possible strategies:
-- 
-  i. Set a confidence threshold for the predictions made by the model (i.e. 50% confidence)
+
+      i. Set a confidence threshold for the predictions made by the model (i.e. 50% confidence)
   
-  ii. Get the centroid from each class and use distance comparison. (i.e. instance have same dist + margin from 2+ centroids or instance is threshold farter then any centroid)
+      ii. Get the centroid from each class and use distance comparison. (i.e. instance have same dist + margin from 2+ centroids or instance is threshold farter then any centroid)
 
 ## Contributions
 
