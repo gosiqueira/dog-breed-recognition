@@ -24,7 +24,7 @@ Download the dog breeds dataset [here](https://drive.google.com/file/d/1-njeI_NW
 
 Download original 100 dog breeds recognition model weights available [here]().
 
-Download enrolled xxx dog breeds recognition model weights available [here]().
+Download enrolled 20 dog breeds recognition model weights available [here]().
 
 ## Instructions
 
