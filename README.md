@@ -77,11 +77,21 @@ python eval.py <dirpath> <outpath> <modelpath> --batch-size <batch_size>
 
 ## Next steps
 
-- Recognize the mutts - For this there are two possible strategies:
+- [ ] Recognize the mutts using one of the above strategies:
 
-      i. Set a confidence threshold for the predictions made by the model (i.e. 50% confidence)
+     i. Set a confidence threshold for the predictions made by the model (i.e. 50% confidence)
   
-      ii. Get the centroid from each class and use distance comparison. (i.e. instance have same dist + margin from 2+ centroids or instance is threshold farter then any centroid)
+     ii. Get the centroid from each class and use distance comparison. (i.e. instance have same dist + margin from 2+ centroids or instance is threshold farter then any centroid)
+     
+- [ ] Improve default model classification using a dog detector to improve dataset quality (i.e. [YOLO](https://pytorch.org/hub/ultralytics_yolov5/))
+
+- [ ] Improve enroll procedure with meta-learning fast adaptation methods using [learn2learn](https://github.com/learnables/learn2learn/) (i.e. [MAML](https://arxiv.org/abs/1703.03400))
+
+- [ ] Implement web interface using [Flask](https://flask.palletsprojects.com/en/2.0.x/) or [Django](https://www.djangoproject.com/)
+
+- [ ] Export model using proper PyTorch tools for web development (i.e. [ONNX](https://onnx.ai/))
+
+- [ ] Check more modern backbones for feature extraction (i.e. [ViT](https://arxiv.org/abs/2010.11929))
 
 ## Contributions
 
