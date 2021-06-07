@@ -75,6 +75,12 @@ python eval.py <dirpath> <outpath> <modelpath> --batch-size <batch_size>
 - `modelpath`: a path to the pre-trained dog breed recognition model
 - `batch-size`: the number of instances to compose a mini-batch
 
+## Next steps
+
+- Recognize the mutts - For this there are two possible strategies:
+  i. Set a confidence threshold for the predictions made by the model (i.e. 50% confidence)
+  ii. Get the centroid from each class and use distance comparison. (i.e. instance have same dist + margin from 2+ centroids or instance is threshold farter then any centroid)
+
 ## Contributions
 
 I'm always opened to discussions and contributions. So, if you find interesting what I developed here and have any suggestion to enhance the codes, please, let me now in the [issues](https://github.com/gosiqueira/dog-breed-recognition/issues).
