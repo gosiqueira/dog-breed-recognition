@@ -3,25 +3,25 @@ import os
 
 import numpy as np
 import torch
+import torch.nn as nn
 from torch.utils.data import DataLoader
 from torchvision.datasets import ImageFolder
 from torchvision.transforms import (Compose, Normalize, RandomHorizontalFlip,
-                                    RandomResizedCrop, RandomRotation, Resize,
+                                    RandomResizedCrop, RandomRotation,
                                     ToTensor)
 
-from losses import FocalLoss
+from losses import LabelSmoothCrossEntropyLoss
 from models import DogBreedRecognizer
 from utils import split_data, train
 
 
 def main(args):
     transforms = Compose([
+        RandomResizedCrop(224),
+        RandomHorizontalFlip(),
+        RandomRotation(15),
         ToTensor(),        
         Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
-        Resize((256, 256)),
-        RandomResizedCrop((224, 224)),
-        RandomHorizontalFlip(),
-        RandomRotation(15)
     ])
 
     data = ImageFolder(args.dirpath, transform=transforms)
@@ -41,7 +41,7 @@ def main(args):
         model = model.cuda()
 
     optim = torch.optim.Adam(model.parameters(), lr=args.learning_rate)
-    criterion = FocalLoss()
+    criterion = LabelSmoothCrossEntropyLoss()
 
     hist = train(model, dataloaders, optim, criterion, epochs=args.epochs, use_cuda=torch.cuda.is_available())
     np.savez(
@@ -65,7 +65,7 @@ if __name__ == '__main__':
     parser.add_argument('-e', '--epochs', type=int, help='Number of epochs.',
         default=100)
     parser.add_argument('--lr', '--learning-rate', dest='learning_rate',
-        type=float, help='Learning rate.', default=1e-4)
+        type=float, help='Learning rate.', default=1e-3)
 
     args = parser.parse_args()
 
