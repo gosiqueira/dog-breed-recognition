@@ -7,61 +7,12 @@ from sklearn.metrics import (accuracy_score, confusion_matrix, f1_score,
                              precision_score, recall_score)
 from sklearn.model_selection import train_test_split
 from torch.utils.data import Subset
+from torch.optim.lr_scheduler import ReduceLROnPlateau
 from tqdm import tqdm
 
 
-class EarlyStopping(object):
-    def __init__(self, mode='min', min_delta=0, patience=10, percentage=False):
-        self.mode = mode
-        self.min_delta = min_delta
-        self.patience = patience
-        self.best = None
-        self.num_bad_epochs = 0
-        self.is_better = None
-        self._init_is_better(mode, min_delta, percentage)
-
-        if patience == 0:
-            self.is_better = lambda a, b: True
-            self.step = lambda a: False
-
-    def step(self, metrics):
-        if self.best is None:
-            self.best = metrics
-            return False
-
-        if torch.isnan(metrics):
-            return True
-
-        if self.is_better(metrics, self.best):
-            self.num_bad_epochs = 0
-            self.best = metrics
-        else:
-            self.num_bad_epochs += 1
-
-        if self.num_bad_epochs >= self.patience:
-            return True
-
-        return False
-
-    def _init_is_better(self, mode, min_delta, percentage):
-        if mode not in {'min', 'max'}:
-            raise ValueError('mode ' + mode + ' is unknown!')
-        if not percentage:
-            if mode == 'min':
-                self.is_better = lambda a, best: a < best - min_delta
-            if mode == 'max':
-                self.is_better = lambda a, best: a > best + min_delta
-        else:
-            if mode == 'min':
-                self.is_better = lambda a, best: a < best - (
-                            best * min_delta / 100)
-            if mode == 'max':
-                self.is_better = lambda a, best: a > best + (
-                            best * min_delta / 100)
-
-
 def train(model, dataloaders, optimizer, criterion, epochs=100, use_cuda=True):
-    early_stop = EarlyStopping(patience=10, mode='min')
+    scheduler = ReduceLROnPlateau(optimizer, 'min')
     
     best_model_wts = deepcopy(model.state_dict())
     best_acc = 0.0
@@ -130,10 +81,8 @@ def train(model, dataloaders, optimizer, criterion, epochs=100, use_cuda=True):
                 if phase == 'val' and epoch_acc > best_acc:
                     best_acc = epoch_acc
                     best_model_wts = deepcopy(model.state_dict())
-
-        if early_stop.step(epoch_loss):
-            print(f'Val loss not improved in the last 10 epochs. Early stopping the training process...')
-            break
+                if phase == 'val':
+                    scheduler.step(epoch_loss)
     
     model.load_state_dict(best_model_wts)
     return history
@@ -152,7 +101,7 @@ def test(model, loader, use_cuda=True):
         _, preds = torch.max(outputs, 1)
 
         if use_cuda:
-            preds.cpu()
+            preds = preds.cpu()
 
         y_true.extend(targets.numpy())
         y_pred.extend(preds.numpy())
@@ -191,8 +140,8 @@ def plot_history(history):
 def get_metrics(y_true, y_pred):
     return {
         'accuracy': accuracy_score(y_true, y_pred),
-        'precision': precision_score(y_true, y_pred),
-        'recall': recall_score(y_true, y_pred),
-        'f1-score': f1_score(y_true, y_pred),
+        'precision': precision_score(y_true, y_pred, average='macro'),
+        'recall': recall_score(y_true, y_pred, average='macro'),
+        'f1-score': f1_score(y_true, y_pred, average='macro'),
         'confusion-matrix': confusion_matrix(y_true, y_pred)
     }
