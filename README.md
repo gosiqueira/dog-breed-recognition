@@ -91,7 +91,7 @@ python eval.py <dirpath> <outpath> <modelpath> --batch-size <batch_size>
 
 - [ ] Export model using proper PyTorch tools for web development (i.e. [ONNX](https://onnx.ai/))
 
-- [ ] Check more modern backbones for feature extraction (i.e. [ViT](https://arxiv.org/abs/2010.11929))
+- [ ] Add TensorBoard
 
 ## Contributions
 
