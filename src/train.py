@@ -10,6 +10,7 @@ from torchvision.transforms import (Compose, Normalize, RandomHorizontalFlip,
                                     RandomResizedCrop, RandomRotation,
                                     ToTensor)
 
+from data import DogBreedsDataset
 from losses import LabelSmoothCrossEntropyLoss
 from models import DogBreedRecognizer
 from utils import split_data, train
@@ -24,7 +25,7 @@ def main(args):
         Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
     ])
 
-    data = ImageFolder(args.dirpath, transform=transforms)
+    data = DogBreedsDataset(args.dirpath, transform=transforms)
     
     train_set, val_set = split_data(data, test_split=.1)
 
